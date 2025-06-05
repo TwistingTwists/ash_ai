@@ -224,8 +224,14 @@ defmodule AshAi.Actions.Prompt.Adapter.RequestJsonTool do
     return_type = data.input.action.returns
     constraints = data.input.action.constraints
 
-    try do
-      generator = Ash.Type.generator(return_type, constraints)
+    generator =
+      try do
+        Ash.Type.generator(return_type, constraints)
+      rescue
+        _ -> nil
+      end
+
+    if generator do
       # Generate a single example value using Enum.take
       [generated_value] = Enum.take(generator, 1)
 
@@ -237,11 +243,10 @@ defmodule AshAi.Actions.Prompt.Adapter.RequestJsonTool do
           # Fallback to simple value if dumping fails
           %{"result" => generated_value}
       end
-    rescue
-      _ ->
-        # Fallback to schema-based generation if type generator fails
-        example_content = generate_example_value(data.json_schema)
-        %{"result" => example_content}
+    else
+      # Fallback to schema-based generation if type generator fails
+      example_content = generate_example_value(data.json_schema)
+      %{"result" => example_content}
     end
   end
 
