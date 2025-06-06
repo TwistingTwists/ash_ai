@@ -276,7 +276,6 @@ defmodule AshAi.Actions.Prompt.Adapter.RequestJsonTest do
           |> Ash.ActionInput.for_action(:test_validation, %{text: "test"})
           |> Ash.run_action!()
       end
-      |> IO.inspect(label: "Error")
 
       # Check for specific error details
       assert length(errors.errors) == 1
