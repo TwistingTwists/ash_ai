@@ -8,7 +8,6 @@ defmodule AshAi.Actions.Prompt.Adapter.StructuredOutput do
 
   alias AshAi.Actions.Prompt.Adapter.Data
   alias LangChain.Chains.LLMChain
-  alias LangChain.LangChainError
   alias LangChain.Message
 
   def run(%Data{} = data, _opts) do
